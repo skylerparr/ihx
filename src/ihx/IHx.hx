@@ -17,7 +17,7 @@
 package ihx;
 
 import sys.io.FileInput;
-import neko.Lib;
+import cpp.Lib;
 import sys.FileSystem;
 import ihx.CmdProcessor;
 
@@ -126,7 +126,10 @@ class IHx
                                 Lib.print(".. ");
                                 continue;
                             }
-                        case InvalidStatement(msg): Lib.println(msg);
+                        case InvalidStatement(msg):
+                            {
+                                Lib.println(msg);
+                            }
                         }
                     }
 

@@ -16,7 +16,7 @@
 
 package ihx;
 
-import neko.Lib;
+import cpp.Lib;
 
 typedef CodeSet = {
     var arrow     :Int;
