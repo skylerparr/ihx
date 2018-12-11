@@ -69,30 +69,30 @@ class IHx
         var libs:Set<String> = [];
         var defines:Set<String> = [];
 
-        var args = Sys.args();
-        if (args.length > 0 && Sys.systemName() == "Windows") args.shift();
-        while( args.length > 0 )
-        {
-            var arg = args.shift();
-            switch ( arg ) {
-                case "-debug":
-                    debug = true;
-                case "-cp":
-                    paths.add(args.shift());
-                case "-lib":
-                    libs.add(args.shift());
-                case "-D":
-                    defines.add(args.shift());
-                case cwd if (FileSystem.exists(cwd)):
-                    Sys.setCwd(cwd);
-                case "-codi":
-                    useCodi = true;
-                case _:
-                    Lib.println('Unknown argument "$arg"');
-                    Lib.println("Usage: neko ihx [-debug] [-cp /class/path/] [-lib ihx:0.3.0] [-D some_define] [-codi] [workingdir]");
-                    Sys.exit(1);
-            }
-        }
+//        var args = Sys.args();
+//        if (args.length > 0 && Sys.systemName() == "Windows") args.shift();
+//        while( args.length > 0 )
+//        {
+//            var arg = args.shift();
+//            switch ( arg ) {
+//                case "-debug":
+//                    debug = true;
+//                case "-cp":
+//                    paths.add(args.shift());
+//                case "-lib":
+//                    libs.add(args.shift());
+//                case "-D":
+//                    defines.add(args.shift());
+//                case cwd if (FileSystem.exists(cwd)):
+//                    Sys.setCwd(cwd);
+//                case "-codi":
+//                    useCodi = true;
+//                case _:
+//                    Lib.println('Unknown argument "$arg"');
+//                    Lib.println("Usage: neko ihx [-debug] [-cp /class/path/] [-lib ihx:0.3.0] [-D some_define] [-codi] [workingdir]");
+//                    Sys.exit(1);
+//            }
+//        }
 
         Lib.println("haxe interactive shell v" + VERSION);
         Lib.println("type \"help\" for help");
