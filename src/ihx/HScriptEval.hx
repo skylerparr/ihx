@@ -17,7 +17,8 @@ class HScriptEval implements Eval {
   private var parser = new Parser();
 
   public function new() {
-    interp.variables.set("Type", Type);
+    parser.allowTypes = true;
+    parser.allowMetadata = true;
   }
 
   public function evaluate(progStr:String):Dynamic {
