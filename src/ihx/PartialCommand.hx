@@ -19,6 +19,7 @@ package ihx;
 /**
    put together a command string from keystrokes
 **/
+import ihx.TabCompletionInfo;
 class PartialCommand
 {
     /** current command string **/
@@ -98,6 +99,91 @@ class PartialCommand
     public function home()
     {
         pos = 0;
+    }
+
+    public function tabComplete(): Void {
+        cpp.Lib.println('');
+
+        suggestOrComplete();
+    }
+
+    private inline function suggestOrComplete(): Void {
+        var retVal: String;
+        var vars: List<String> = CmdProcessor.getVars();
+        switch(pos) {
+            case 0:
+                for(v in vars) {
+                    cpp.Lib.println(v);
+                }
+            case _:
+                var filterString: TabCompletion = getFilteredString();
+                var filtered = switch(filterString.type) {
+                    case CompletionType.SCOPE:
+                        vars;
+                    case CompletionType.REFLECT:
+                        var result = HScriptEval.instance.evaluate(filterString.sub);
+                        var retVal: List<String> = new List<String>();
+                        if(Std.is(result, Class)) {
+                            var fields: Array<String> = Type.getClassFields(result);
+                            for(f in fields) {
+                                retVal.add(f);
+                            }
+                        } else {
+                            var obj = HScriptEval.interp.variables.get(filterString.sub);
+                            if(obj != null) {
+                                var clazz = Type.getClass(obj);
+                                var fields: Array<String> = Type.getInstanceFields(clazz);
+                                for(f in fields) {
+                                    retVal.add(f);
+                                }
+                            }
+                        }
+                        filterString.sub += '.';
+                        retVal;
+                }
+                filtered = filtered.filter(function(i) { return StringTools.startsWith(i, filterString.str); });
+                if(filtered.length == 1) {
+                    str = filterString.sub + filtered.first() + filterString.suffix;
+                    end();
+                } else {
+                    for(f in filtered) {
+                        cpp.Lib.println(f);
+                    }
+                }
+
+
+        }
+    }
+
+    private inline function getFilteredString(): TabCompletion {
+        var found: Bool = false;
+        var retVal: String = null;
+        var type: CompletionType = CompletionType.SCOPE;
+        var counter: Int = pos;
+        var sub: String = '';
+        while(!found) {
+            counter--;
+            var prevChar:String = str.charAt(counter);
+            switch(prevChar) {
+                case '(' | ')' | ',' | ' ' | ':' | '{' | '}' | '+' | '-' | '*' | '/' | '[' | ']':
+                    found = true;
+                    retVal = str.substring(counter + 1, pos);
+                    sub = str.substring(0, counter + 1);
+                case '.':
+                    found = true;
+                    type = CompletionType.REFLECT;
+                    retVal = str.substring(counter + 1, pos);
+                    sub = str.substring(0, counter);
+                case _ if(counter * -1 >= str.length):
+                    found = true;
+                    retVal = str;
+            }
+        }
+        if(retVal == null) {
+            retVal = str;
+        }
+        var suffix = str.substring(pos);
+        return {str: retVal, type: type, sub: sub, suffix: suffix};
     }
 
     /**

@@ -26,6 +26,7 @@ typedef CodeSet = {
     var left      :Int;
     var home      :Int;
     var end       :Int;
+    var tab       :Int;
     var backspace :Int;
     var ctrlc     :Int;
     var enter     :Int;
@@ -65,13 +66,13 @@ class ConsoleReader
         history = new History();
         if( std.Sys.systemName() == "Windows" )
             codeSet = {arrow: 224, up: 72, down: 80, right: 77, left: 75, home: 71, end: 79,
-                       backspace: 8, ctrlc: 3, enter: 13,
+                       backspace: 8, ctrlc: 3, enter: 13, tab: 9,
                        ctrla: 1, ctrle: 5, ctrlb: 2, ctrlf: 6, ctrld: 4,
                        ctrlp: -1, ctrln: -1, ctrlk: -1, ctrlu: -1, ctrly: -1
             };
         else
             codeSet = {arrow: 27, up: 65, down: 66, right: 67, left: 68, home: 72, end: 70,
-                       backspace: 127, ctrlc: 3, enter: 13,
+                       backspace: 127, ctrlc: 3, enter: 13, tab: 9,
                        ctrla: 1, ctrle: 5, ctrlb: 2, ctrlf: 6, ctrld: 4,
                        ctrlp: 16, ctrln: 14, ctrlk: 11, ctrlu: 21, ctrly: 25
             };
@@ -140,6 +141,7 @@ class ConsoleReader
                 case _ if(code == codeSet.ctrlf): cmd.cursorForward();
                 case _ if(code == codeSet.ctrlb): cmd.cursorBack();
                 case _ if(code == codeSet.backspace): cmd.backspace();
+                case _ if(code == codeSet.tab):    cmd.tabComplete();
                 case _ if( code>=32 && code<=126 ): cmd.addChar(String.fromCharCode(code));
                 }
             }

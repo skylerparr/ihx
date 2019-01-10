@@ -14,9 +14,12 @@ class HScriptEval implements Eval {
   public var tmpSuffix(default, null):String;
 
   public static var interp = new Interp();
-  private var parser = new Parser();
+  public static var parser = new Parser();
+
+  public static var instance: Eval;
 
   public function new() {
+    instance = this;
     parser.allowTypes = true;
     parser.allowMetadata = true;
   }

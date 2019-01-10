@@ -48,8 +48,15 @@ class CmdProcessor
     /** name of new lib to include in build */
     private var cmdStr :String;
 
+    public static var instance: CmdProcessor;
+
+    public static function getVars(): List<String> {
+        return instance.program.getVars();
+    }
+
     public function new( ?useDebug=false, ?paths:Set<String>, ?libs:Set<String>, ?defines:Set<String> )
     {
+        instance = this;
         #if useNeko
         eval = new NekoEval();
         #else

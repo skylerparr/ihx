@@ -91,7 +91,7 @@ class IHx
 //                    Lib.println('Unknown argument "$arg"');
 //                    Lib.println("Usage: neko ihx [-debug] [-cp /class/path/] [-lib ihx:0.3.0] [-D some_define] [-codi] [workingdir]");
 //                    Sys.exit(1);
-//            }
+//            }                                                   `
 //        }
 
         Lib.println("haxe interactive shell v" + VERSION);
