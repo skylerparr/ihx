@@ -126,7 +126,12 @@ class PartialCommand
                         if(Std.is(result, Class)) {
                             var fields: Array<String> = Type.getClassFields(result);
                             for(f in fields) {
-                                retVal.add(f);
+                                if(StringTools.startsWith(f, 'get_') || StringTools.startsWith(f, 'set_')) {
+                                    f = f.substr(4);
+                                }
+                                if(!contains(retVal, f)) {
+                                    retVal.add(f);
+                                }
                             }
                         } else {
                             var obj = HScriptEval.interp.variables.get(filterString.sub);
@@ -150,9 +155,18 @@ class PartialCommand
                         cpp.Lib.println(f);
                     }
                 }
-
-
         }
+    }
+
+    private inline function contains(list: List<String>, value: String): Bool {
+        var retVal: Bool = false;
+        for(l in list) {
+            if(l == value) {
+                retVal = true;
+                break;
+            }
+        }
+        return retVal;
     }
 
     private inline function getFilteredString(): TabCompletion {
