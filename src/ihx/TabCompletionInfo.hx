@@ -9,5 +9,6 @@ typedef TabCompletion = {
   str: String,
   sub: String,
   suffix: String,
+  prefix: String,
   type: CompletionType,
 }
