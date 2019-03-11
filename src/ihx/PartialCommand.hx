@@ -151,9 +151,29 @@ class PartialCommand
                     str = filterString.prefix + filtered.first() + filterString.suffix;
                     end();
                 } else {
+                    var commonString: String = null;
+                    var complete: String = '';
                     for(f in filtered) {
+                        complete = '';
+                        if(commonString == null) {
+                            commonString = f;
+                        } else {
+                            var length: Int = Std.int(Math.min(commonString.length, f.length));
+                            for(i in 0...length) {
+                                var charA = commonString.charAt(i);
+                                var charB = f.charAt(i);
+                                if(charA != charB) {
+                                    commonString = f.substr(0, i);
+                                    continue;
+                                }
+                                complete += charB;
+                            }
+                        }
+
                         cpp.Lib.println(f);
                     }
+                    str = filterString.prefix + complete + filterString.suffix;
+                    pos = filterString.prefix.length + complete.length;
                 }
         }
     }
