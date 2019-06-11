@@ -105,7 +105,7 @@ class CmdProcessor
     /**
        process a line of user input
     **/
-    public function process(cmd :String) :String
+    public function process(cmd :String) :Dynamic
     {
         if( cmd.endsWith("\\") )
         {
@@ -147,7 +147,7 @@ class CmdProcessor
         program.clearStatements();
 
         sb = new StringBuf();
-        return (ret==null) ? null : Std.string(ret);
+        return ret;
     }
 
     private function firstWord(str :String) :String

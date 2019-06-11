@@ -46,25 +46,25 @@ class History
             var history: Array<String> = historyStr.split('\n');
             for(h in history) {
                 if(h.length > 0) {
-                    commands.push(h);
+                    commands.unshift(h);
                 }
             }
         }
         File.saveContent(historyFile, '');
         historyOutput = File.append(historyFile, false);
 
-        if(commands.length == 0) {
-            commands.push("");
-        } else {
-            commands.reverse();
-            for(i in 0...20) {
-                if(i > commands.length) {
-                    break;
-                }
-                add(commands[i]);
+        commands.reverse();
+        for(i in 0...20) {
+            if(i > commands.length) {
+                break;
             }
-            commands.reverse();
+            if(commands[i] == null || commands[i] == '') {
+                continue;
+            }
+            historyOutput.writeString(commands[i] + '\n');
         }
+        commands.reverse();
+        historyOutput.flush();
     }
 
     public function add(cmd)
@@ -84,18 +84,14 @@ class History
 
     public function next()
     {
-        if(commands.length == 0) {
-            return '';
-        } else {
-            return commands[++pos % commands.length];
-        }
+        return commands[++pos % commands.length];
     }
 
     public function prev()
     {
         pos--;
         if( pos < 0 ) {
-            pos += commands.length;
+            pos = commands.length;
         }
         if(commands.length == 0) {
             return '';

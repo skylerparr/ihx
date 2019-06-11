@@ -112,9 +112,22 @@ class IHx
                 {
                     try
                     {
-                        var ret = processor.process(console.readLine());
-                        if( ret != null )
+                        var ret: Dynamic = processor.process(console.readLine());
+                        var printerClass: Class<Dynamic> = Type.resolveClass('Anna');
+                        var stringFunc: Dynamic->String = null;
+                        if(printerClass != null) {
+                            stringFunc = Reflect.field(printerClass, 'inspect');
+                        }
+                        if(stringFunc != null) {
+                            ret = stringFunc(ret);
                             Lib.println(ret+"\n");
+                        } else if(ret != null) {
+                            ret = Std.string(ret);
+                            Lib.println(ret+"\n");
+                        }
+//                        if( ret != null ) {
+//                        Lib.println(ret+"\n");
+//                        }
                     }
                     catch (ex:CmdError)
                     {
