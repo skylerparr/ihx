@@ -29,6 +29,7 @@ class HScriptEval implements Eval {
     try {
       var ast = parser.parseString(progStr);
       ret = interp.execute(ast);
+      interp.variables.set("_", ret);
     } catch(e: Dynamic) {
       if(StringTools.endsWith(e, '"<eof>"')) {
         throw IncompleteStatement;
