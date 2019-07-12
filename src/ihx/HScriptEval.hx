@@ -1,5 +1,6 @@
 package ihx;
 
+import hscript.plus.ParserPlus;
 import ihx.CmdProcessor.CmdError.InvalidStatement;
 import ihx.CmdProcessor.CmdError.IncompleteStatement;
 import hscript.Interp;
@@ -14,7 +15,7 @@ class HScriptEval implements Eval {
   public var tmpSuffix(default, null):String;
 
   public static var interp = new Interp();
-  public static var parser = new Parser();
+  public static var parser = new ParserPlus();
 
   public static var instance: Eval;
 
