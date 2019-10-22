@@ -28,6 +28,7 @@ import ihx.CmdProcessor;
 class IHx
 {
     private static var VERSION = "0.3.6";
+    private static var running: Bool = true;
 
     /** the source for commands **/
     private var console :ConsoleReader;
@@ -45,8 +46,13 @@ class IHx
     **/
     public static function main()
     {
+        running = true;
         var interpreter = new IHx();
         interpreter.run();
+    }
+
+    public static function stop(): Void {
+        running = false;
     }
 
     /**
@@ -100,7 +106,7 @@ class IHx
 
         var processor = new CmdProcessor(debug,paths,libs,defines);
 
-        while( true )
+        while( running )
         {
             // initial prompt
             console.cmd.prompt = ">> ";
@@ -108,7 +114,7 @@ class IHx
 
             if (!useCodi) 
             {
-                while (true)
+                while (running)
                 {
                     try
                     {
@@ -156,7 +162,7 @@ class IHx
                 // using codi: vim with the codi plugin requires
                 // a more conventional interpreter, hence following 
                 // implementation (launched with "haxelib run ihx -codi") 
-                while (true) {
+                while (running) {
                     Lib.print(">> ");
                     var line = Sys.stdin().readLine();
                     Lib.println(line);
